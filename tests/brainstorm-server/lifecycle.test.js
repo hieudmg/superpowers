@@ -176,7 +176,7 @@ async function runTests() {
         startProcess = spawn('bash', [START, '--project-dir', dir, '--idle-timeout-minutes', '5']);
         info = firstServerStarted(await waitForStartedOutput(startProcess));
       } else {
-        const out = execFileSync('bash', [START, '--project-dir', dir, '--idle-timeout-minutes', '5', '--background'], { encoding: 'utf8' });
+        const out = execFileSync('bash', [START, '--project-dir', dir, '--idle-timeout-minutes', '5'], { encoding: 'utf8' });
         info = firstServerStarted(out);
       }
       sessionDir = newestSessionDir(dir);

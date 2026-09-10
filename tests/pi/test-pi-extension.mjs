@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -46,6 +46,8 @@ test('package.json declares a pi package with skills and extension resources', a
   const pkg = await readPackageJson();
 
   assert.equal(pkg.name, 'superpowers');
+  assert.equal('main' in pkg, false, 'Pi packages must not reference a removed non-Pi entry point');
+  assert.match(pkg.description, /Pi/i, 'package metadata must identify Pi');
   assert.ok(pkg.keywords.includes('pi-package'));
   assert.deepEqual(pkg.pi.skills, ['./skills']);
   assert.deepEqual(pkg.pi.extensions, ['./.pi/extensions/superpowers.ts']);
@@ -134,4 +136,40 @@ test('pi tools reference documents pi-specific mappings', async () => {
     rows.some((row) => /todo|task/i.test(row)),
     'mapping table documents task tracking',
   );
+});
+
+test('distribution contains only the Pi integration and fork branding', async () => {
+  const requiredPaths = [
+    'package.json',
+    '.pi/extensions/superpowers.ts',
+    'skills/using-superpowers/references/pi-tools.md',
+    'README.md',
+  ];
+  const removedPaths = [
+    '.agents', '.claude-plugin', '.codex-plugin', '.cursor-plugin', '.devin-plugin',
+    '.hermes-plugin', '.kimi-plugin', '.opencode', 'hooks', 'docs', '.github',
+    'assets', 'scripts', 'CLAUDE.md', 'GEMINI.md', 'AGENTS.md',
+    'gemini-extension.json', 'RELEASE-NOTES.md', 'CODE_OF_CONDUCT.md',
+    '.pre-commit-config.yaml', '.version-bump.json',
+  ];
+
+  for (const relativePath of requiredPaths) {
+    assert.equal(existsSync(resolve(repoRoot, relativePath)), true, `${relativePath} must remain`);
+  }
+  for (const relativePath of removedPaths) {
+    assert.equal(existsSync(resolve(repoRoot, relativePath)), false, `${relativePath} must be removed`);
+  }
+
+  const readme = await readFile(resolve(repoRoot, 'README.md'), 'utf8');
+  assert.match(readme, /hieudmg\/superpowers/, 'README must identify this fork');
+  assert.doesNotMatch(readme, /obra\/superpowers/, 'README must not link upstream');
+
+  const references = await readdir(resolve(repoRoot, 'skills/using-superpowers/references'));
+  assert.deepEqual(references.sort(), ['pi-tools.md']);
+
+  const sddWorkspace = await readFile(resolve(repoRoot, 'skills/subagent-driven-development/scripts/sdd-workspace'), 'utf8');
+  assert.doesNotMatch(sddWorkspace, /Claude Code/, 'retained scripts must not name another harness');
+
+  const extension = await readFile(extensionPath, 'utf8');
+  assert.doesNotMatch(extension, /Claude Code/, 'Pi extension instructions must not name another harness');
 });
