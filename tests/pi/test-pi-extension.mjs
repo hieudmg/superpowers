@@ -42,6 +42,13 @@ function textOf(message) {
     .join('\n');
 }
 
+function assertProportionalBootstrap(message) {
+  const text = textOf(message).replace(/\s+/g, ' ');
+  assert.match(text, /Skills are on-demand guidance, not a mandatory chain/i);
+  assert.match(text, /Small, clear change:\*\* inspect relevant evidence, implement, and verify/i);
+  assert.doesNotMatch(text, /1% chance|before ANY response/i);
+}
+
 test('package.json declares a pi package with skills and extension resources', async () => {
   const pkg = await readPackageJson();
 
@@ -109,6 +116,7 @@ test('startup context injects the bootstrap as one user message until agent_end'
   assert.equal(result.messages[0].role, 'user');
   assert.match(textOf(result.messages[0]), /You have superpowers/);
   assert.match(textOf(result.messages[0]), /Pi tool mapping/);
+  assertProportionalBootstrap(result.messages[0]);
   assert.equal(result.messages[1], originalMessages[0]);
 
   const repeatedProviderRequest = await context({ type: 'context', messages: originalMessages }, {});
@@ -138,6 +146,7 @@ test('session_compact injects bootstrap after compaction summaries, not before c
   assert.equal(result.messages[0], summary);
   assert.equal(result.messages[1].role, 'user');
   assert.match(textOf(result.messages[1]), /You have superpowers/);
+  assertProportionalBootstrap(result.messages[1]);
   assert.equal(result.messages[2], user);
 });
 
