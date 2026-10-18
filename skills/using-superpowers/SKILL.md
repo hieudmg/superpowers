@@ -33,6 +33,12 @@ with the owner. Resolve ordinary reversible implementation details within the
 approved task. Preserve unrelated work, use one writer per checkout, apply
 behavior-focused testing, and verify claims with evidence.
 
+Before claiming completion, inspect the diff and run checks that establish the
+claimed behavior against the current relevant state. A child report or passing
+lint is not proof of a working feature. Recheck after relevant changes and report
+failures, skips, and limitations explicitly. Review feedback is a claim to verify,
+not an instruction to accept automatically.
+
 Pi discovers skills natively. Read their `SKILL.md` when needed; `/skill:name`
 explicitly invokes one. See `references/pi-tools.md` for optional subagent and task
 tracking mappings. Tool availability alone does not authorize delegation.
