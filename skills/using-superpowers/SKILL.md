@@ -1,58 +1,38 @@
 ---
 name: using-superpowers
-description: Use when starting any conversation - establishes how to find and use skills, requiring skill invocation before ANY response including clarifying questions
+description: Use at session start to select relevant skills and scale the workflow to the task.
 ---
 
-<SUBAGENT-STOP>
-If you were dispatched as a subagent to execute a specific task, ignore this skill.
-</SUBAGENT-STOP>
+# Using Superpowers
 
-<EXTREMELY-IMPORTANT>
-If you think there is even a 1% chance a skill might apply to what you are doing, you ABSOLUTELY MUST invoke the skill.
+Skills are on-demand guidance, not a mandatory chain. Follow applicable system,
+developer, user, and project instructions before these defaults.
 
-IF A SKILL APPLIES TO YOUR TASK, YOU DO NOT HAVE A CHOICE. YOU MUST USE IT.
+If dispatched as a child, complete the assigned task; do not restart the
+controller's planning workflow.
 
-This is not negotiable. You cannot rationalize your way out of this.
-</EXTREMELY-IMPORTANT>
+## Choose the smallest useful workflow
 
-## The Rule
+- **Question or inspection:** answer or inspect directly. No implementation plan.
+- **Small, clear change:** inspect relevant evidence, implement, and verify.
+- **Unclear requirements or consequential trade-offs:** use `brainstorming` to
+  settle them before implementation.
+- **Substantial multi-step work:** use `writing-plans`; choose direct execution or
+  `subagent-driven-development` according to approved scope and project policy.
+- **Bug or failing check:** use `systematic-debugging` before proposing a fix.
 
-**Invoke relevant or requested skills BEFORE any response or action** — including clarifying questions, exploring the codebase, or checking files. If it turns out wrong for the situation, you don't have to use it.
+Load a skill when its guidance is needed, not merely because it could apply.
+Read relevant sections and references; do not repeatedly load unchanged material.
+A short explanation of the approach is enough—no required announcement per skill,
+checklist item, or internal step.
 
-**Before entering plan mode:** if you haven't already brainstormed, invoke the brainstorming skill first.
+## Keep the safeguards
 
-Then announce "Using [skill] to [purpose]" and follow the skill exactly. If it has a checklist, create a todo per item.
+Confirm consequential product, API, security, scope, and irreversible decisions
+with the owner. Resolve ordinary reversible implementation details within the
+approved task. Preserve unrelated work, use one writer per checkout, apply
+behavior-focused testing, and verify claims with evidence.
 
-## Skill Priority
-
-When multiple skills apply, process skills come first — they set the approach, then implementation skills (frontend-design, etc.) carry it out. Brainstorming and systematic-debugging are Superpowers' most common process skills, but the rule holds for any of them.
-
-- "Let's build X" → superpowers:brainstorming first, then implementation skills.
-- "Fix this bug" → superpowers:systematic-debugging first, then domain skills.
-
-## Red Flags
-
-These thoughts mean STOP—you're rationalizing:
-
-| Thought | Reality |
-|---------|---------|
-| "This is just a simple question" | Questions are tasks. Check for skills. |
-| "I need more context first" | Skill check comes BEFORE clarifying questions. |
-| "Let me explore the codebase first" | Skills tell you HOW to explore. Check first. |
-| "I can check git/files quickly" | Files lack conversation context. Check for skills. |
-| "Let me gather information first" | Skills tell you HOW to gather information. |
-| "This doesn't need a formal skill" | If a skill exists, use it. |
-| "I remember this skill" | Skills evolve. Read current version. |
-| "This doesn't count as a task" | Action = task. Check for skills. |
-| "The skill is overkill" | Simple things become complex. Use it. |
-| "I'll just do this one thing first" | Check BEFORE doing anything. |
-| "This feels productive" | Undisciplined action wastes time. Skills prevent this. |
-| "I know what that means" | Knowing the concept ≠ using the skill. Invoke it. |
-
-## Pi Tool Mapping
-
-Read `references/pi-tools.md` for Pi-specific tool mappings.
-
-## User Instructions
-
-User instructions in `AGENTS.md` and direct requests take precedence over skills, which in turn override default behavior. Only skip skill workflows or instructions when your human partner has explicitly told you to.
+Pi discovers skills natively. Read their `SKILL.md` when needed; `/skill:name`
+explicitly invokes one. See `references/pi-tools.md` for optional subagent and task
+tracking mappings. Tool availability alone does not authorize delegation.
