@@ -1,7 +1,7 @@
 {
   "name": "superpowers",
   "version": "6.3.0",
-  "description": "Superpowers skills and runtime bootstrap for Pi Agent",
+  "description": "Superpowers skills for Pi Agent",
   "type": "module",
   "keywords": [
     "pi-package",
@@ -12,9 +12,6 @@
     "workflow"
   ],
   "pi": {
-    "extensions": [
-      "./.pi/extensions/superpowers.ts"
-    ],
     "skills": [
       "./skills"
     ]
