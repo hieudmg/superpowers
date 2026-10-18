@@ -47,9 +47,10 @@ retried 5 times and the 6th attempt never happens."
 **Behavior, not text.** Asserting that a script, skill, or config
 contains an exact line proves only that the source is the source. Run
 scripts against controlled inputs and assert outputs, side effects, or
-exit codes. Documents that instruct agents are tested by the consuming
-agent's behavior (superpowers:writing-skills); prose for humans earns no
-test at all.
+exit codes. Validate behavior-shaping agent instructions with representative
+consumer scenarios when feasible; structural checks alone do not prove model
+compliance. Human-facing prose generally needs review rather than automated
+behavioral tests.
 
 **Your code, not the framework.** Test the contract your code makes at
 its boundaries — the route you register, the query you emit, the payload

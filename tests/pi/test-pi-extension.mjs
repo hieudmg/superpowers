@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
+import { basename, dirname, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import test from 'node:test';
 
@@ -69,6 +69,27 @@ test('resources_discover contributes the bundled skills directory', async () => 
   const result = await discover({ type: 'resources_discover', cwd: repoRoot, reason: 'startup' }, {});
 
   assert.deepEqual(result.skillPaths, [resolve(repoRoot, 'skills')]);
+});
+
+test('discovered resources contain only the six core skills', async () => {
+  const { handlers } = await loadExtension();
+  const discover = firstHandler(handlers, 'resources_discover');
+  const { skillPaths } = await discover({ type: 'resources_discover', cwd: repoRoot, reason: 'startup' }, {});
+  const inventories = await Promise.all(skillPaths.map(async (dir) => {
+    const entries = await readdir(dir, { recursive: true });
+    return entries
+      .filter((entry) => basename(entry) === 'SKILL.md')
+      .map((entry) => entry.split(sep).join('/'));
+  }));
+
+  assert.deepEqual(inventories.flat().sort(), [
+    'brainstorming/SKILL.md',
+    'subagent-driven-development/SKILL.md',
+    'systematic-debugging/SKILL.md',
+    'test-driven-development/SKILL.md',
+    'using-superpowers/SKILL.md',
+    'writing-plans/SKILL.md',
+  ]);
 });
 
 test('startup context injects the bootstrap as one user message until agent_end', async () => {

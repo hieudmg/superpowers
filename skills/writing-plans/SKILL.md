@@ -59,7 +59,8 @@ checks, realistic dependencies, and unnecessary work. A placeholder for a materi
 requirement is an unresolved decision, not an executable task.
 
 Use `subagent-driven-development` when delegation is authorized and useful;
-otherwise execute directly, using `executing-plans` if needed. Do not ask the
-owner to choose an execution mode already established by their instructions.
-Track task completion in the plan or a small ledger. Commits and publication
-follow approved Git scope, not the existence of a plan.
+otherwise execute the tasks directly, tracking completion in the plan or a small
+ledger. Do not ask the owner to choose an execution mode already established by
+their instructions. Investigate failing checks and resolve consequential changes
+to the approved plan with the owner. Commits and publication follow approved Git
+scope, not the existence of a plan.

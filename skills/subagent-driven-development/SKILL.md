@@ -52,9 +52,11 @@ restart, read it and Git/runtime state before relaunching work.
 4. **Review proportionately:** use a fresh read-only reviewer for substantial,
    risky, ambiguous, public, or hard-to-inspect changes. A trivial task with
    decisive checks does not need a separate model review.
-5. **Resolve findings:** apply accepted fixes with one writer; revalidate the
-   affected behavior. Re-review material fixes within their blast radius. Record
-   deferred non-blockers and escalate unresolved required decisions.
+5. **Resolve findings:** verify feedback against requirements and code; separate
+   blockers from suggestions and push back on incorrect findings with evidence.
+   Apply accepted fixes with one writer and revalidate affected behavior. Re-review
+   material fixes within their blast radius. Record deferred non-blockers and
+   escalate unresolved required decisions.
 6. **Record completion:** update the ledger with changes, validation, review
    disposition, and handoff references. Run whole-change checks after dependent
    tasks are integrated.
